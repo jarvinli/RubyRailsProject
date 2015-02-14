@@ -1,0 +1,553 @@
+<html>
+	<head>
+		<!-- This where JS and Css go, AKA assets-->
+		<style>
+			table, th, td 
+			{
+			    border: 2px solid black;
+			    border-collapse: collapse;
+			    position: center;
+			}
+			th, td 
+			{
+			    padding: 5px;
+			}
+			body
+			{
+				background-color: #E6E6FA;
+			}
+
+			table 
+			{
+				font-size: 50px;
+			}
+		</style>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
+		</script>
+	</head>
+
+	<body>
+
+			<table id="grid" style="">
+				<tr> <!--Row 6-->
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+				<tr><!--Row 5-->
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+				<tr><!--Row 4-->
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+				<tr><!--Row 3-->
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+				<tr><!--Row 2-->
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+				<tr><!--Row 1-->
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+				<tr><!--Column Buttons-->
+					<td><button id="1" onclick = "EditHere(1)">Add Here!</button></td>
+					<td><button id="2" onclick = "EditHere(2)">Add Here!</button></td>
+					<td><button id="3" onclick = "EditHere(3)">Add Here!</button></td>
+					<td><button id="4" onclick = "EditHere(4)">Add Here!</button></td>
+					<td><button id="5" onclick = "EditHere(5)">Add Here!</button></td>
+					<td><button id="6" onclick = "EditHere(6)">Add Here!</button></td>
+					<td><button id="7" onclick = "EditHere(7)">Add Here!</button></td>
+				</tr>
+			</table>
+			<p id="table"></p>
+
+		<script>
+			var turn = 1; //1 is for player 1 and 2 is for player 2.
+			var row = 6; //to check bottom row 1st 6->1
+			var maxTurn = 56;//max turns allowed per game
+			var turnCounter = 0;//Turn counter to check how many times the game has been played
+			var x = 1;
+			var i, count;
+			var y = 1;
+			i =0;
+			count =0;
+			//row count is from 1->6; 6 being bottom;
+			//edits the display
+			function EditHere(col)
+			{
+				row = 6;
+				x=1;
+				//turn of X
+				if(Checker(col))
+				{
+					turnCounter = 56;
+				}
+
+				if(turnCounter == maxTurn || turnCounter>= maxTurn)
+				{
+					alert("Game over board is full");
+				}
+				else
+				{
+					if(turn ==1)
+					{
+						turn =2;
+						//checks whether the slate is blank or not
+						while($('#grid tr:nth-child('+row+') td:nth-child('+col+')').html()!= "-" && row > 0)
+						{
+							//row check goes up
+							row--;
+							if(row == 0)
+							{
+								alert("Column is full");
+								turn = 1;
+							}
+						}
+						$('#grid tr:nth-child('+row+') td:nth-child('+col+')').html("X");
+
+					}
+					//turn of O
+					else if(turn ==2)
+					{
+						turn =1;
+						//checks whether the slate is blank or not
+						while($('#grid tr:nth-child('+row+') td:nth-child('+col+')').html()!= "-" && row > 0)
+						{
+							//row check goes up
+							row--;
+							if(row == 0)
+							{
+								alert("Column is full");
+								turn = 2;
+							}
+						}
+						$('#grid tr:nth-child('+row+') td:nth-child('+col+')').html("O");
+					}
+					//turn counter goes up till it reaches the top
+					
+				}
+
+				//turnCounter++;
+				if(Checker(col))
+				{
+					turnCounter = 56;
+				}
+				turnCounter++;
+
+				
+			}
+
+			//checks whether game is done or somebody wins
+			//checks if no more turns
+			function Checker(col)
+			{
+				if(turnCounter == maxTurn)
+				{
+					alert("Game over board is full");
+				}
+
+				else if(turnCounter <=maxTurn)
+				{
+					//PLAYER 1
+					if(turn == 1)
+					{
+						//X is variable for row counter
+						//This for loop is for checking 1st 4 columns of all rows
+						//HORIZONTAL
+						for(x = 1; x<=6; x++)
+						{
+
+							if(	$('#grid tr:nth-child('+x+') td:nth-child(1)').html()== "X" && 
+								$('#grid tr:nth-child('+x+') td:nth-child(2)').html()== "X" &&
+								$('#grid tr:nth-child('+x+') td:nth-child(3)').html()== "X" &&
+								$('#grid tr:nth-child('+x+') td:nth-child(4)').html()== "X" )
+							{
+								alert("Player X wins");
+								break;
+								return true;
+							}
+							else if($('#grid tr:nth-child('+x+') td:nth-child(2)').html()== "X" && 
+									$('#grid tr:nth-child('+x+') td:nth-child(3)').html()== "X" &&
+									$('#grid tr:nth-child('+x+') td:nth-child(4)').html()== "X" &&
+									$('#grid tr:nth-child('+x+') td:nth-child(5)').html()== "X" )
+							{
+								alert("Player X wins");
+								break;
+								return true;
+							}
+							else if($('#grid tr:nth-child('+x+') td:nth-child(3)').html()== "X" && 
+									$('#grid tr:nth-child('+x+') td:nth-child(4)').html()== "X" &&
+									$('#grid tr:nth-child('+x+') td:nth-child(5)').html()== "X" &&
+									$('#grid tr:nth-child('+x+') td:nth-child(6)').html()== "X")
+							{
+								alert("Player X wins");
+								break;
+								return true;
+							}
+							else if($('#grid tr:nth-child('+x+') td:nth-child(4)').html()== "X" && 
+									$('#grid tr:nth-child('+x+') td:nth-child(5)').html()== "X" &&
+									$('#grid tr:nth-child('+x+') td:nth-child(6)').html()== "X" &&
+									$('#grid tr:nth-child('+x+') td:nth-child(7)').html()== "X")
+							{
+								alert("Player X wins");
+								break;
+								return true;
+							}
+						}
+						//VERTICAL
+						for(x = 1; x<=6; x++)
+						{
+
+							if(	$('#grid tr:nth-child(1) td:nth-child('+x+')').html()== "X" && 
+								$('#grid tr:nth-child(2) td:nth-child('+x+')').html()== "X" &&
+								$('#grid tr:nth-child(3) td:nth-child('+x+')').html()== "X" &&
+								$('#grid tr:nth-child(4) td:nth-child('+x+')').html()== "X" )
+							{
+								alert("Player X wins");
+								break;
+								return true;
+							}
+							else if($('#grid tr:nth-child(2) td:nth-child('+x+')').html()== "X" && 
+									$('#grid tr:nth-child(3) td:nth-child('+x+')').html()== "X" &&
+									$('#grid tr:nth-child(4) td:nth-child('+x+')').html()== "X" &&
+									$('#grid tr:nth-child(5) td:nth-child('+x+')').html()== "X" )
+							{
+								alert("Player X wins");
+								break;
+								return true;
+							}
+							else if($('#grid tr:nth-child(3) td:nth-child('+x+')').html()== "X" && 
+									$('#grid tr:nth-child(4) td:nth-child('+x+')').html()== "X" &&
+									$('#grid tr:nth-child(5) td:nth-child('+x+')').html()== "X" &&
+									$('#grid tr:nth-child(6) td:nth-child('+x+')').html()== "X")
+							{
+								alert("Player X wins");
+								break;
+								return true;
+							}
+						}
+
+						//DIAGONAL
+						
+						i=0;
+						count =1;
+						x = row;
+						y = col;
+						while(row + i < 7 && col - i>0)
+						{	
+							x = x + i;
+							y = y - i;
+
+							if($('#grid tr:nth-child('+y+') td:nth-child('+x+')').html() == "X")
+							{
+								count++;
+							}
+							if(count >=4)
+							{
+								alert("Player X Wins");
+								break;
+								return true;
+							}
+							i++;
+						}
+
+						count =1;
+						while(row + i < 7 && col + i<8)
+						{	
+							x = x + i;
+							y = y + i;
+
+							if($('#grid tr:nth-child('+y+') td:nth-child('+x+')').html() == "X")
+							{
+								count++;
+							}
+								
+							if(count >=4)
+							{
+								alert("Player X Wins");
+								break;
+								return true;
+							}
+							i++;
+						}
+
+						i=1;
+
+						count =1;
+						while(row+i>0 && col +i<8)
+						{
+							x = x-i;
+							y = y-i;
+							if($('#grid tr:nth-child('+y+') td:nth-child('+x+')').html() == "X")
+							{
+								count++;
+							}
+								
+							if(count >=4)
+							{
+								alert("Player X Wins");
+								break;
+								return true;
+							}
+							i++;
+						}
+						count =1;
+						while(row - i >0 && col - i >0)
+						{	
+							x = x - i;
+							y = y - i;
+
+							if($('#grid tr:nth-child('+y+') td:nth-child('+x+')').html() == "X")
+							{
+								count++;
+							}
+								
+							if(count >=4)
+							{
+								alert("Player X Wins");
+								break;
+								return true;
+							}
+							i++;
+						}
+						//alert(count);
+
+
+					}
+					//PLAYER 2
+					else if(turn == 2)
+					{
+						//X is variable for row counter
+						//This for loop is for checking 1st 4 columns of all rows
+						//HORIZONTAL
+						for(x = 1; x<=6; x++)
+						{
+
+							if(	$('#grid tr:nth-child('+x+') td:nth-child(1)').html()== "O" && 
+								$('#grid tr:nth-child('+x+') td:nth-child(2)').html()== "O" &&
+								$('#grid tr:nth-child('+x+') td:nth-child(3)').html()== "O" &&
+								$('#grid tr:nth-child('+x+') td:nth-child(4)').html()== "O" )
+							{
+								alert("Player O wins");
+								break;
+								return true;
+							}
+							else if($('#grid tr:nth-child('+x+') td:nth-child(2)').html()== "O" && 
+									$('#grid tr:nth-child('+x+') td:nth-child(3)').html()== "O" &&
+									$('#grid tr:nth-child('+x+') td:nth-child(4)').html()== "O" &&
+									$('#grid tr:nth-child('+x+') td:nth-child(5)').html()== "O" )
+							{
+								alert("Player O wins");
+								break;
+								return true;
+							}
+							else if($('#grid tr:nth-child('+x+') td:nth-child(3)').html()== "O" && 
+									$('#grid tr:nth-child('+x+') td:nth-child(4)').html()== "O" &&
+									$('#grid tr:nth-child('+x+') td:nth-child(5)').html()== "O" &&
+									$('#grid tr:nth-child('+x+') td:nth-6(child)').html()== "O")
+							{
+								alert("Player O wins");
+								break;
+								return true;
+							}
+							else if($('#grid tr:nth-child('+x+') td:nth-child(4)').html()== "O" && 
+									$('#grid tr:nth-child('+x+') td:nth-child(5)').html()== "O" &&
+									$('#grid tr:nth-child('+x+') td:nth-child(6)').html()== "O" &&
+									$('#grid tr:nth-child('+x+') td:nth-child(7)').html()== "O")
+							{
+								alert("Player O wins");
+								break;
+								return true;
+							}
+						}
+						//VERTICAL
+						for(x = 1; x<=6; x++)
+						{
+
+							if(	$('#grid tr:nth-child(1) td:nth-child('+x+')').html()== "O" && 
+								$('#grid tr:nth-child(2) td:nth-child('+x+')').html()== "O" &&
+								$('#grid tr:nth-child(3) td:nth-child('+x+')').html()== "O" &&
+								$('#grid tr:nth-child(4) td:nth-child('+x+')').html()== "O" )
+							{
+								alert("Player O wins");
+								break;
+								return true;
+							}
+							else if($('#grid tr:nth-child(2) td:nth-child('+x+')').html()== "O" && 
+									$('#grid tr:nth-child(3) td:nth-child('+x+')').html()== "O" &&
+									$('#grid tr:nth-child(4) td:nth-child('+x+')').html()== "O" &&
+									$('#grid tr:nth-child(5) td:nth-child('+x+')').html()== "O" )
+							{
+								alert("Player O wins");
+								break;
+								return true;
+							}
+							else if($('#grid tr:nth-child(3) td:nth-child('+x+')').html()== "O" && 
+									$('#grid tr:nth-child(4) td:nth-child('+x+')').html()== "O" &&
+									$('#grid tr:nth-child(5) td:nth-child('+x+')').html()== "O" &&
+									$('#grid tr:nth-child(6) td:nth-child('+x+')').html()== "O")
+							{
+								alert("Player O wins");
+								break;
+								return true;
+							}
+						}
+
+						//DIAGONAL
+						
+						i=0;
+						count =1;
+						x = row;
+						y = col;
+						while(row + i < 7 && col - i>0)
+						{	
+							x = x + i;
+							y = y - i;
+
+							if($('#grid tr:nth-child('+y+') td:nth-child('+x+')').html() == "O")
+							{
+								count++;
+							}
+								
+							if(count >=4)
+							{
+								alert("Player X Wins");
+								break;
+								return true;
+							}
+							i++;
+						}
+						count =1;
+						while(row + i < 7 && col + i<8)
+						{	
+							x = x + i;
+							y = y + i;
+
+							if($('#grid tr:nth-child('+y+') td:nth-child('+x+')').html() == "O")
+							{
+								count++;
+							}
+								
+							if(count >=4)
+							{
+								alert("Player X Wins");
+								break;
+								return true;
+							}
+							i++;
+						}
+
+						i=1;
+						count =1;
+						while(row+i>0 && col +i<8)
+						{
+							x = x-i;
+							y = y-i;
+							if($('#grid tr:nth-child('+y+') td:nth-child('+x+')').html() == "O")
+							{
+								count++;
+							}
+								
+							if(count >=4)
+							{
+								alert("Player X Wins");
+								break;
+								return true;
+							}
+							i++;
+						}
+						count =1;
+						while(row - i >0 && col - i >0)
+						{	
+							x = x - i;
+							y = y - i;
+
+							if($('#grid tr:nth-child('+y+') td:nth-child('+x+')').html() == "O")
+							{
+								count++;
+							}
+								
+							if(count >=4)
+							{
+								alert("Player X Wins");
+								break;
+								return true;
+							}
+							i++;
+						}
+						//alert(count);
+
+					}
+				}
+			}
+
+			/*
+			function myFunction() {
+			    alert("I am an alert box!");
+			}*/
+
+			//calls funtions on when somebody wins
+			function CheckWin()
+			{
+
+			}
+
+			//Check if they win horizontaly
+			function CheckHorizontal()
+			{
+
+			}
+
+			//Check if they win Vertically
+			/*function CheckVertival()
+			{
+
+			}
+
+			//Check if they win Diagonally
+			function CheckDiagonal()
+			{
+
+			}*/
+
+						//$('#grid tr:nth-child(3) td:nth-child(3)').html()
+		</script>
+
+
+
+	</body>
+</html>
